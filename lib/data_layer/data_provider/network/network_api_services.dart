@@ -9,7 +9,6 @@ class NetworkApiServices extends HttpApiServices {
     required String url,
     bool haveHeader = false,
   }) async {
-    // Map<String, String>? headers = haveHeader ? {} : {};
 
     final dio = Dio();
     try {
@@ -17,7 +16,7 @@ class NetworkApiServices extends HttpApiServices {
 
       return returnResponse(response);
     } on DioException catch (e) {
-      return returnResponse(e.response!);
+      return returnResponse(e.response);
     }
   }
 
@@ -31,37 +30,43 @@ class NetworkApiServices extends HttpApiServices {
     try {
       final response = await dio.post(
         url,
-        data: {"email": "siddiquekp240@gmail.com", "password": "siddik@123"},
+        data: body,
       );
-      log("11111111111111111");
-      // log(response.data.toString());
+      log(response.data.toString());
       // log(response.statusCode.toString());
 
       return returnResponse(response);
     } on DioException catch (e) {
-      return returnResponse(e.response!);
+      return returnResponse(e.response);
     }
   }
 
-  dynamic returnResponse(Response response) {
-    final jsonBody = response.data;
-    log("here========================");
-    switch (response.statusCode) {
-      case 200:
-        log("1");
-        return response.data;
-      case 201:
-        log("2");
-        return response.data;
-      case 400:
-        log("3");
-        return FetchDataExceptions(jsonBody["error"]);
-      case 401:
-        log("4");
-        return UnauthorizedExeptions(jsonBody["message"]);
-      default:
-        log("5");
-        return InvalidException("Unknown error ${response.statusCode}");
+  dynamic returnResponse(Response<dynamic>? response) {
+    if (response != null) {
+      final jsonBody = response.data;
+      log("here========================");
+      switch (response.statusCode) {
+        case 200:
+          log("1");
+          return response.data;
+        case 201:
+          log("2");
+          return response.data;
+        case 400:
+          log("3");
+          throw FetchDataExceptions(jsonBody["message"]);
+        case 401:
+          log("4");
+          throw UnauthorizedExeptions(jsonBody["message"]);
+        case 500:
+          log("5");
+          throw UnauthorizedExeptions(jsonBody["message"]);
+        default:
+          log("6");
+          throw InvalidException("Unknown error ${response.data}");
+      }
+    } else {
+      throw FetchDataExceptions("No internet connection");
     }
   }
 }

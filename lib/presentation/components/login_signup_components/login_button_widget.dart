@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talk_a_tive/presentation/components/loading_widget.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({
@@ -25,7 +26,7 @@ class LoginButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
         ),
-        child: isLoading ? const CircularProgressIndicator() : Text(text),
+        child: isLoading ? LoadingWidget.lottieLoading() : Text(text),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_login/user_login_bloc.dart';
+import 'package:talk_a_tive/bussiness_logic/user_sign_up/user_sign_up_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/presentation/user_login_page.dart';
 
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<UserLoginBloc>(
           create: (context) => UserLoginBloc(),
+        ),
+        BlocProvider<UserSignUpBloc>(
+          create: (context) => UserSignUpBloc(),
         ),
       ],
       child: MaterialApp(

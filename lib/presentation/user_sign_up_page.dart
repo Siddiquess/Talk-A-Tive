@@ -1,11 +1,15 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:talk_a_tive/bussiness_logic/user_sign_up/user_sign_up_bloc.dart';
+import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
+import 'package:talk_a_tive/presentation/components/login_signup_components/rich_text_widget.dart';
+import 'package:talk_a_tive/presentation/components/snackbar_widget.dart';
 import 'package:talk_a_tive/presentation/user_login_page.dart';
 import '../core/app_colors.dart';
 import '../core/sizes.dart';
-import 'components/login_button_widget.dart';
-import 'components/login_text_form_widget.dart';
+import 'components/login_signup_components/login_button_widget.dart';
+import 'components/login_signup_components/login_text_form_widget.dart';
 
 class UserSignupPage extends StatelessWidget {
   UserSignupPage({super.key});
@@ -32,101 +36,110 @@ class UserSignupPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                   Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey.shade600,
-                        child: CircleAvatar(
-                          radius: 49,
-                          backgroundColor: Colors.grey.shade300,
-                          backgroundImage: const AssetImage("assets/no_user.jpg"),
-                        ),
-                      ),
-                      const Positioned(
-                        bottom: 7,
-                        right: 1,
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: AppColors.black,
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 20,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      LoginTextFieldWidget(
-                        controller: nameController,
-                        icons: Icons.person,
-                        labelText: "username",
-                      ),
-                      LoginTextFieldWidget(
-                        controller: emailController,
-                        icons: Icons.email,
-                        labelText: "email",
-                      ),
-                      LoginTextFieldWidget(
-                        controller: passwordController,
-                        icons: Icons.lock,
-                        labelText: "password",
-                      ),
-                      AppSizes.height30,
-                      LoginButton(
-                        text: "Sign up",
-                        onPressed: () {},
-                      ),
-                      AppSizes.height20,
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                const TextSpan(
-                                  text: 'Already have an account? ',
-                                  style: TextStyle(
-                                      color: AppColors.black, fontSize: 15),
+        body: BlocListener<UserSignUpBloc, UserSignUpState>(
+          listener: (context, state) {
+            if (state.userSignupData?.status == Status.error) {
+              SnackBarWidget.flushbar(
+                context: context,
+                message: state.userSignupData!.message!,
+              );
+            }
+          },
+          child: BlocBuilder<UserSignUpBloc, UserSignUpState>(
+            builder: (context1, state) {
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey.shade600,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: CircleAvatar(
+                                  radius: 49,
+                                  backgroundColor: Colors.grey.shade300,
+                                  backgroundImage:
+                                      const AssetImage("assets/no_user.jpg"),
                                 ),
-                                TextSpan(
-                                  text: 'Login',
-                                  style: const TextStyle(
-                                      color: AppColors.primary,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => UserLoginPage(),
-                                        ),
-                                      );
-                                    },
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Positioned(
+                                bottom: 7,
+                                right: 1,
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: AppColors.black,
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 20,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                    ],
+                        Column(
+                          children: [
+                            LoginTextFieldWidget(
+                              controller: nameController,
+                              icons: Icons.person,
+                              labelText: "username",
+                            ),
+                            LoginTextFieldWidget(
+                              controller: emailController,
+                              icons: Icons.email,
+                              labelText: "email",
+                            ),
+                            LoginTextFieldWidget(
+                              controller: passwordController,
+                              icons: Icons.lock,
+                              labelText: "password",
+                            ),
+                            AppSizes.height30,
+                            LoginButton(
+                              text: "Sign up",
+                              onPressed: () {
+                                BlocProvider.of<UserSignUpBloc>(context).add(
+                                  UserSignUp(
+                                    name: nameController.text.trim(),
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                    picture: "",
+                                  ),
+                                );
+                              },
+                            ),
+                            AppSizes.height20,
+                            RichTextWidget(
+                              leftText: "Already",
+                              rightText: "Login",
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => UserLoginPage(),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                        AppSizes.height30
+                      ],
+                    ),
                   ),
-                  AppSizes.height30
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
