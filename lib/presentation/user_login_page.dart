@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_login/user_login_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
@@ -17,6 +18,12 @@ class UserLoginPage extends StatelessWidget {
   final GlobalKey _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+          statusBarColor: AppColors.white,
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.dark),
+    );
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -26,75 +33,90 @@ class UserLoginPage extends StatelessWidget {
         }
       },
       child: Scaffold(
+        backgroundColor: AppColors.scaffoldColor,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  LoginTextFieldWidget(
-                    controller: emailController,
-                    icons: Icons.email,
-                    labelText: "email",
-                  ),
-                  LoginTextFieldWidget(
-                    controller: passwordController,
-                    icons: Icons.lock,
-                    labelText: "password",
-                  ),
-                  AppSizes.height10,
-                  LoginButton(
-                    text: "Login",
-                    onPressed: () {
-                      BlocProvider.of<UserLoginBloc>(context, listen: false)
-                          .add(
-                        UserLogin(
-                          email: emailController.text.trim(),
-                          passoword: passwordController.text.trim(),
-                        ),
-                      );
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
-                    },
-                  ),
-                  AppSizes.height20,
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            const TextSpan(
-                              text: 'Don\'t have an account? ',
-                              style: TextStyle(
-                                  color: AppColors.black, fontSize: 15),
-                            ),
-                            TextSpan(
-                              text: 'Sign in',
-                              style: const TextStyle(
-                                  color: AppColors.primary,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => UserSignupPage(),
-                                  ));
-                                },
-                            ),
-                          ],
-                        ),
-                      ),
+                  Container(
+                    height: 130,
+                    width: 130,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/Talkative_logo.png"),
+                          fit: BoxFit.cover),
                     ),
                   ),
+                  Column(
+                    children: [
+                      LoginTextFieldWidget(
+                        controller: emailController,
+                        icons: Icons.email,
+                        labelText: "email",
+                      ),
+                      LoginTextFieldWidget(
+                        controller: passwordController,
+                        icons: Icons.lock,
+                        labelText: "password",
+                      ),
+                      AppSizes.height30,
+                      LoginButton(
+                        text: "Login",
+                        onPressed: () {
+                          BlocProvider.of<UserLoginBloc>(context, listen: false)
+                              .add(
+                            UserLogin(
+                              email: emailController.text.trim(),
+                              passoword: passwordController.text.trim(),
+                            ),
+                          );
+
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        },
+                      ),
+                      AppSizes.height20,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: 'Don\'t have an account? ',
+                                  style: TextStyle(
+                                      color: AppColors.black, fontSize: 15),
+                                ),
+                                TextSpan(
+                                  text: 'Sign in',
+                                  style: const TextStyle(
+                                      color: AppColors.primary,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => UserSignupPage(),
+                                      ));
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  AppSizes.height30,
                 ],
               ),
             ),

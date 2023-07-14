@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:talk_a_tive/core/app_colors.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({
@@ -11,11 +13,14 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: AppColors.primary,
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
           child: Container(
             padding: const EdgeInsets.only(right: 16),
@@ -30,33 +35,31 @@ class ChatPage extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(
-                  width: 2,
-                ),
+                const SizedBox(width: 2),
                 CircleAvatar(
                   backgroundImage: NetworkImage(imageUrl),
                   maxRadius: 20,
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                       Text(
+                      Text(
                         userName,
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      const SizedBox(
-                        height: 6,
-                      ),
+                      const SizedBox(height: 6),
                       Text(
                         "Online",
                         style: TextStyle(
-                            color: Colors.grey.shade600, fontSize: 13),
+                          color: Colors.grey.shade200,
+                          fontSize: 13,
+                        ),
                       ),
                     ],
                   ),
@@ -87,7 +90,7 @@ class ChatPage extends StatelessWidget {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        color: Colors.lightBlue,
+                        color:  AppColors.primarylite,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: const Icon(
@@ -113,7 +116,7 @@ class ChatPage extends StatelessWidget {
                   ),
                   FloatingActionButton(
                     onPressed: () {},
-                    backgroundColor: Colors.blue,
+                    backgroundColor: AppColors.primarylite,
                     elevation: 0,
                     child: const Icon(
                       Icons.send,

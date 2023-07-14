@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:talk_a_tive/presentation/user_login_page.dart';
 import '../core/app_colors.dart';
 import '../core/sizes.dart';
@@ -16,6 +17,12 @@ class UserSignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+          statusBarColor: AppColors.white,
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.dark),
+    );
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -33,17 +40,18 @@ class UserSignupPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Stack(
+                   Stack(
                     children: [
                       CircleAvatar(
                         radius: 50,
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: Colors.grey.shade600,
                         child: CircleAvatar(
-                          radius: 48,
-                          backgroundColor: AppColors.primarylite,
+                          radius: 49,
+                          backgroundColor: Colors.grey.shade300,
+                          backgroundImage: const AssetImage("assets/no_user.jpg"),
                         ),
                       ),
-                      Positioned(
+                      const Positioned(
                         bottom: 7,
                         right: 1,
                         child: CircleAvatar(
@@ -75,7 +83,7 @@ class UserSignupPage extends StatelessWidget {
                         icons: Icons.lock,
                         labelText: "password",
                       ),
-                      AppSizes.height10,
+                      AppSizes.height30,
                       LoginButton(
                         text: "Sign up",
                         onPressed: () {},

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_login/user_login_bloc.dart';
+import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/presentation/chat_page.dart';
 
 import 'components/chat_user_list.dart';
@@ -11,6 +13,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: AppColors.primary,
+      ),
+    );
     return BlocBuilder<UserLoginBloc, UserLoginState>(
       builder: (context, state) {
         return GestureDetector(
@@ -22,59 +29,61 @@ class HomePage extends StatelessWidget {
             }
           },
           child: Scaffold(
+            appBar: AppBar(
+              centerTitle: false,
+              automaticallyImplyLeading: false,
+              flexibleSpace: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Talkative",
+                        style: TextStyle(
+                          fontSize: 27,
+                          color: AppColors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.pink[50],
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Colors.pink,
+                              size: 20,
+                            ),
+                            SizedBox(width: 2),
+                            Text(
+                              "Add New",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SafeArea(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, right: 16, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Talkative",
-                            style: TextStyle(
-                              fontSize: 27,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              left: 8,
-                              right: 8,
-                              top: 2,
-                              bottom: 2,
-                            ),
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.pink[50],
-                            ),
-                            child: const Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.add,
-                                  color: Colors.pink,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 2),
-                                Text(
-                                  "Add New",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 16, left: 16, right: 16),

@@ -13,7 +13,8 @@ class ConversationList extends StatelessWidget {
     required this.messageText,
     required this.imageUrl,
     required this.time,
-    required this.isMessageRead, required this.onTap,
+    required this.isMessageRead,
+    required this.onTap,
   });
   @override
   Widget build(BuildContext context) {
