@@ -23,10 +23,10 @@ class LoginTextFieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.black),
-            borderRadius: BorderRadius.circular(5.0),
+            borderRadius: BorderRadius.circular(25),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(25),
           ),
           contentPadding: const EdgeInsets.all(8),
           prefixIconColor: AppColors.black,
