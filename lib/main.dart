@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:talk_a_tive/bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_login/user_login_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_sign_up/user_sign_up_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<UserSignUpBloc>(
           create: (context) => UserSignUpBloc(),
+        ),
+        BlocProvider<HomeChatListBloc>(
+          create: (context) => HomeChatListBloc(),
         ),
       ],
       child: MaterialApp(

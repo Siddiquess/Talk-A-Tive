@@ -8,6 +8,8 @@ class ApiResponse<T> {
 
   ApiResponse(this.data, this.message, this.status);
 
+  ApiResponse.initial() : status = Status.initial;
+
   ApiResponse.loading() : status = Status.loading;
 
   ApiResponse.completed(this.data) : status = Status.success;

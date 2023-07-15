@@ -1,6 +1,7 @@
 part of 'home_chat_list_bloc.dart';
 
-@immutable
-abstract class HomeChatListState {}
+class HomeChatListState {
+  ApiResponse<List<HomeChatListModel>> homeChatList;
 
-class HomeChatListInitial extends HomeChatListState {}
+   HomeChatListState({required this.homeChatList});
+}

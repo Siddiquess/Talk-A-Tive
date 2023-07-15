@@ -7,11 +7,12 @@ class NetworkApiServices extends HttpApiServices {
   @override
   Future httpGetMethod({
     required String url,
-    bool haveHeader = false,
+    String? headers,
   }) async {
 
     final dio = Dio();
     try {
+       dio.options.headers["Authorization"] = "Bearer $headers";
       final response = await dio.get(url);
 
       return returnResponse(response);
@@ -24,10 +25,11 @@ class NetworkApiServices extends HttpApiServices {
   Future httpPostethod({
     required String url,
     required Map body,
-    bool haveHeader = false,
+    String? headers,
   }) async {
     final dio = Dio();
     try {
+      dio.options.headers["Authorization"] = "Bearer $headers";
       final response = await dio.post(
         url,
         data: body,
