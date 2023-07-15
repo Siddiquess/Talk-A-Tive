@@ -21,8 +21,11 @@ class ConversationList extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 16,
+          
+        ),
         child: Row(
           children: [
             Expanded(
