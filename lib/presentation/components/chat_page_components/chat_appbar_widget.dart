@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
 
 class ChatAppbarWidget extends StatelessWidget {
   const ChatAppbarWidget({
@@ -18,6 +20,10 @@ class ChatAppbarWidget extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
+              BlocProvider.of<IndividualChatBloc>(context)
+                  .state
+                  .messages
+                  .clear();
               Navigator.pop(context);
             },
             icon: const Icon(

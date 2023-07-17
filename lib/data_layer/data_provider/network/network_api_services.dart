@@ -34,7 +34,7 @@ class NetworkApiServices extends HttpApiServices {
         url,
         data: body,
       );
-      log(response.data.toString());
+      // log(response.data.toString());
       // log(response.statusCode.toString());
 
       return returnResponse(response);

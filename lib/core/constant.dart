@@ -8,6 +8,8 @@ class AppUrls {
   static const String userSignup = "$baseUrl/api/user/";
   static const String homeChatList = "$baseUrl/api/user/";
   static const String searchChatList = "$baseUrl/api/user?search=";
+  static const String createIndiChatRoom = "$baseUrl/api/chat/";
+  static const String getAllMessages = "$baseUrl/api/message/";
 
 }
 

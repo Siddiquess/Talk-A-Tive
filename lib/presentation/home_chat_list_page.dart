@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
+import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/core/sizes.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
     });
 
     return GestureDetector(
-       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -143,12 +144,19 @@ class HomePage extends StatelessWidget {
                                   isMessageRead:
                                       (index == 0 || index == 3) ? true : false,
                                   onTap: () {
+                                    BlocProvider.of<IndividualChatBloc>(context)
+                                        .add(
+                                      OnCreatIndividualChat(
+                                        userId: userChatList[index].sId!,
+                                      ),
+                                    );
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ChatPage(
                                           imageUrl: userChatList[index].pic!,
                                           userName: userChatList[index].name!,
+                                          userId: userChatList[index].sId!,
                                         ),
                                       ),
                                     );
