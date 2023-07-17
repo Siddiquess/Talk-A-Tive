@@ -11,10 +11,25 @@ part 'home_chat_list_state.dart';
 
 class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
   final homechatRepo = HomeChatListRepository();
-  HomeChatListBloc() : super(HomeChatListState(homeChatList: ApiResponse.initial())) {
+  HomeChatListBloc()
+      : super(HomeChatListState(homeChatList: ApiResponse.initial())) {
     on<GetHomeChatListEvent>(
       (event, emit) async {
-        emit(HomeChatListState(homeChatList: ApiResponse.loading()));
+        if (state.homeChatList.data != null) {
+          if (state.homeChatList.data!.isNotEmpty) {
+            emit(
+              HomeChatListState(
+                homeChatList: state.homeChatList,
+              ),
+            );
+          }
+        }
+
+        emit(
+          HomeChatListState(
+            homeChatList: ApiResponse.loading(),
+          ),
+        );
 
         final response =
             await homechatRepo.getHomeChatList(url: AppUrls.homeChatList);
@@ -26,6 +41,36 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
                 homeChatList: ApiResponse.error(
                   failure.toString(),
                 ),
+              ),
+            ),
+          },
+          (success) => {
+            emit(
+              HomeChatListState(
+                homeChatList: ApiResponse.completed(success),
+              ),
+            ),
+          },
+        );
+      },
+    );
+
+    on<GetSearchChatList>(
+      (event, emit) async {
+        emit(
+          HomeChatListState(
+            homeChatList: ApiResponse.loading(),
+          ),
+        );
+
+        final response = await homechatRepo.getHomeChatList(
+            url: AppUrls.searchChatList + event.chatQuery);
+
+        response.fold(
+          (failure) => {
+            emit(
+              HomeChatListState(
+                homeChatList: ApiResponse.error(failure.toString()),
               ),
             ),
           },

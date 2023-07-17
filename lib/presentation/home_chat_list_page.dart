@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +8,14 @@ import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/core/sizes.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
 import 'package:talk_a_tive/presentation/chat_page.dart';
+import '../core/debouncer.dart';
 import 'components/chat_user_list.dart';
 import 'components/user_list_widget.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final _debouncer = Debouncer(milliseconds: 1000);
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +30,7 @@ class HomePage extends StatelessWidget {
     });
 
     return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
+       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -84,7 +83,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: BlocBuilder<HomeChatListBloc, HomeChatListState>(
-          builder: (context, state) {
+          builder: (context1, state) {
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -95,7 +94,13 @@ class HomePage extends StatelessWidget {
                         const EdgeInsets.only(top: 16, left: 16, right: 16),
                     child: TextField(
                       onChanged: (value) {
-                        
+                        log("search Working-----------------");
+                        _debouncer.run(
+                          () {
+                            BlocProvider.of<HomeChatListBloc>(context)
+                                .add(GetSearchChatList(chatQuery: value));
+                          },
+                        );
                       },
                       decoration: InputDecoration(
                         hintText: "Search...",
@@ -120,7 +125,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   state.homeChatList.status == Status.loading
-                      ? const CircularProgressIndicator()
+                      ? const Center(child: CircularProgressIndicator())
                       : state.homeChatList.status == Status.success
                           ? ListView.builder(
                               itemCount: state.homeChatList.data!.length,
@@ -152,8 +157,8 @@ class HomePage extends StatelessWidget {
                               },
                             )
                           : state.homeChatList.status == Status.error
-                              ? const Center(
-                                  child: Text("error"),
+                              ? Center(
+                                  child: Text(state.homeChatList.message!),
                                 )
                               : AppSizes.height10
                 ],

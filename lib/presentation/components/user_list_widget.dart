@@ -32,6 +32,7 @@ class ConversationList extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.grey.shade200,
                     backgroundImage: NetworkImage(imageUrl),
                     maxRadius: 30,
                   ),

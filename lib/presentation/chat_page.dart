@@ -7,13 +7,15 @@ import 'components/chat_page_components/chat_appbar_widget.dart';
 import 'components/chat_page_components/chat_content_widget.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({
+   ChatPage({
     super.key,
     required this.imageUrl,
     required this.userName,
   });
   final String imageUrl;
   final String userName;
+
+  final TextEditingController _chatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +70,10 @@ class ChatPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 15),
-                    const Expanded(
+                     Expanded(
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller:_chatController ,
+                        decoration: const InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none,

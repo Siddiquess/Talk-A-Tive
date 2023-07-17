@@ -43,7 +43,7 @@ class UserSignupPage extends StatelessWidget {
             if (state.userSignupData?.status == Status.success) {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const HomePage(),
+                  builder: (context) =>  HomePage(),
                 ),
               );
             }

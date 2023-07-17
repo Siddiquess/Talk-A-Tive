@@ -49,7 +49,7 @@ Future<Widget> loginStatus() async {
     if (userLoggedIn == false) {
       return UserLoginPage();
     } else {
-      return const HomePage();
+      return  HomePage();
     }
   } catch (e) {
     return UserLoginPage();
