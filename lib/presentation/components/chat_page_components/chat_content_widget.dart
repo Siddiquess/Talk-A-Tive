@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
@@ -16,6 +18,7 @@ class ChatContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<IndividualChatBloc, IndividualChatState>(
       builder: (context, state) {
+        log(state.messages.length.toString());
         return SingleChildScrollView(
           child: Column(
             children: [

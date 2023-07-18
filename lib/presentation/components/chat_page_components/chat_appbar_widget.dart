@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
+import 'package:talk_a_tive/core/app_colors.dart';
 
 class ChatAppbarWidget extends StatelessWidget {
   const ChatAppbarWidget({
@@ -28,11 +29,12 @@ class ChatAppbarWidget extends StatelessWidget {
             },
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: AppColors.white,
             ),
           ),
           const SizedBox(width: 2),
           CircleAvatar(
+            backgroundColor: Colors.grey.shade200,
             backgroundImage: NetworkImage(imageUrl),
             maxRadius: 20,
           ),
@@ -47,6 +49,7 @@ class ChatAppbarWidget extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: AppColors.white
                   ),
                 ),
                 const SizedBox(height: 6),

@@ -1,11 +1,7 @@
-// To parse this JSON data, do
-//
-//     final sendIndividualMessageModel = sendIndividualMessageModelFromJson(jsonString);
-
 import 'dart:convert';
 
-SendIndividualMessageModel sendIndividualMessageModelFromJson(String str) =>
-    SendIndividualMessageModel.fromJson(json.decode(str));
+SendIndividualMessageModel sendIndividualMessageModelFromJson(Map<String, dynamic> str) =>
+    SendIndividualMessageModel.fromJson(str);
 
 String sendIndividualMessageModelToJson(SendIndividualMessageModel data) =>
     json.encode(data.toJson());

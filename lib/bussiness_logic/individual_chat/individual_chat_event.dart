@@ -3,11 +3,6 @@ part of 'individual_chat_bloc.dart';
 @immutable
 abstract class IndividualChatEvent {}
 
-class OnSendChatMessageEvent extends IndividualChatEvent {
-  final String message;
-  OnSendChatMessageEvent({required this.message});
-}
-
 class OnCreatIndividualChat extends IndividualChatEvent {
   final String userId;
   OnCreatIndividualChat({required this.userId});
@@ -22,6 +17,26 @@ class OnGetAllIndividualMessages extends IndividualChatEvent {
   final String chatRoomId;
 
   OnGetAllIndividualMessages({required this.chatRoomId}) {
+    log(" chat room id from constructor $chatRoomId");
+  }
+}
+
+class OnSendChatMessageEvent extends IndividualChatEvent {
+  final String message;
+  final String chatRoomId;
+  OnSendChatMessageEvent({
+    required this.message,
+    required this.chatRoomId,
+  }) {
     log(chatRoomId);
+  }
+
+  Map<String, dynamic> sendMessageBody() {
+    final sendMsgBody = SendIndividualMessageModel(
+      chatId: chatRoomId,
+      content: message,
+    );
+
+    return sendMsgBody.toJson();
   }
 }
