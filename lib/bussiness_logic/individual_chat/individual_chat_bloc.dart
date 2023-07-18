@@ -19,7 +19,9 @@ class IndividualChatBloc
     on<OnCreatIndividualChat>(
       (event, emit) async {
         final response = await individualChatRepo.creatChatRoom(
-            url: AppUrls.createIndiChatRoom, body: event.roomChatBody());
+          url: AppUrls.createIndiChatRoom,
+          body: event.roomChatBody(),
+        );
 
         response.fold(
           (failure) => {
@@ -60,10 +62,10 @@ class IndividualChatBloc
             ),
           },
           (success) => {
-            // ignore: avoid_function_literals_in_foreach_calls
-            success.forEach((element) {
-              updatedMessage.add(element.content!);
-            }),
+            for (var element in success)
+              {
+                updatedMessage.add(element.content!),
+              },
             emit(
               state.copyWith(
                 messages: updatedMessage,
@@ -80,11 +82,7 @@ class IndividualChatBloc
         List<String> updatedMessage = List.from(state.messages);
         updatedMessage.add(event.message);
         emit(
-          IndividualChatState(
-            messages: state.messages,
-            indChatModel: state.indChatModel,
-            getAllindChatModel: state.getAllindChatModel,
-          ),
+          state.copyWith(),
         );
 
         final response = await individualChatRepo.sendMessages(
@@ -94,16 +92,15 @@ class IndividualChatBloc
 
         response.fold(
           (failure) => {
-            IndividualChatState(
-              messages: state.messages,
-              indChatModel: state.indChatModel,
-              getAllindChatModel: state.getAllindChatModel,
-            ),
+            state.copyWith(),
           },
           (success) => {
-            log("updated $updatedMessage"),
+            log("updated ${updatedMessage.length}"),
+            log("updated getall  length ${state.getAllindChatModel.data!.map((e) => e.content).last}"),
             emit(
-              state.copyWith(messages: updatedMessage),
+              state.copyWith(
+                messages: updatedMessage,
+              ),
             )
           },
         );

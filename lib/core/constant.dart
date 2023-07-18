@@ -11,7 +11,6 @@ class AppUrls {
   static const String createIndiChatRoom = "$baseUrl/api/chat/";
   static const String getAllMessages = "$baseUrl/api/message/";
   static const String sendMessages = "$baseUrl/api/message/";
-
 }
 
 class AccessToken {
@@ -19,5 +18,13 @@ class AccessToken {
     final sharedPref = await SharedPreferences.getInstance();
     final accessToken = sharedPref.getString(GlobalKeys.accessToken);
     return accessToken;
+  }
+}
+
+class UserID {
+  static Future<String?> getUserID() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    final userID = sharedPref.getString(GlobalKeys.userIDKey);
+    return userID;
   }
 }

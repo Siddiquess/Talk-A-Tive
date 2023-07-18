@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         title: 'Talk-A-Tive chat app',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: true,
           elevatedButtonTheme: const ElevatedButtonThemeData(
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(AppColors.primary),

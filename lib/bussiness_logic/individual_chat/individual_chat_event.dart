@@ -16,9 +16,7 @@ class OnCreatIndividualChat extends IndividualChatEvent {
 class OnGetAllIndividualMessages extends IndividualChatEvent {
   final String chatRoomId;
 
-  OnGetAllIndividualMessages({required this.chatRoomId}) {
-    log(" chat room id from constructor $chatRoomId");
-  }
+  OnGetAllIndividualMessages({required this.chatRoomId});
 }
 
 class OnSendChatMessageEvent extends IndividualChatEvent {

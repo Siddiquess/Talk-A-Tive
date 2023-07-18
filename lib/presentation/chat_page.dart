@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
@@ -24,11 +23,6 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: AppColors.primary,
-      ),
-    );
     bool isApiCallTriggered = false;
     return WillPopScope(
       onWillPop: () async {
@@ -71,59 +65,64 @@ class ChatPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding:
-                          const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                color: AppColors.primarylite,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 20,
-                              ),
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                              top: 7,
                             ),
-                          ),
-                          const SizedBox(width: 15),
-                          Expanded(
-                            child: Scrollbar(
-                              child: SizedBox(
-                                height: 120,
-                                width: 240,
-                                child: TextField(
-                                  expands: true,
-                                  controller: _chatController,
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: null,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.only(top: 5),
-                                    hintText: "Write message...",
-                                    hintStyle: TextStyle(color: Colors.black54),
-                                    border: InputBorder.none,
+                            constraints: const BoxConstraints(
+                              minHeight: 46,
+                            ),
+                            height: 46,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Row(
+                              children: [
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: Scrollbar(
+                                    child: SizedBox(
+                                      height: 120,
+                                      width: 240,
+                                      child: TextField(
+                                        expands: true,
+                                        controller: _chatController,
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: null,
+                                        decoration: const InputDecoration(
+                                          contentPadding:
+                                              EdgeInsets.only(top: 5),
+                                          hintText: "Write message...",
+                                          hintStyle:
+                                              TextStyle(color: Colors.black54),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                const SizedBox(width: 15),
+                              ],
                             ),
                           ),
-                          const SizedBox(width: 15),
-                          BlocBuilder<IndividualChatBloc, IndividualChatState>(
-                            builder: (context, state) {
-                              return FloatingActionButton(
+                        ),
+                        BlocBuilder<IndividualChatBloc, IndividualChatState>(
+                          builder: (context, state) {
+                            return Container(
+                              padding: const EdgeInsets.only(
+                                left: 2,
+                                right: 5,
+                                bottom: 10,
+                                top: 10,
+                              ),
+                              height: 65,
+                              child: FloatingActionButton(
                                 onPressed: state.indChatModel.status ==
                                         Status.success
                                     ? () {
@@ -158,13 +157,13 @@ class ChatPage extends StatelessWidget {
                                 child: const Icon(
                                   Icons.send,
                                   color: Colors.white,
-                                  size: 18,
+                                  size: 25,
                                 ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

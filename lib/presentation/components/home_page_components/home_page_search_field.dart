@@ -15,7 +15,7 @@ class HomePageSearchFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
       child: TextField(
         onChanged: (value) {
           _debouncer.run(
@@ -26,6 +26,7 @@ class HomePageSearchFieldWidget extends StatelessWidget {
           );
         },
         decoration: InputDecoration(
+          
           hintText: "Search...",
           hintStyle: TextStyle(color: Colors.grey.shade600),
           prefixIcon: Icon(
@@ -35,7 +36,7 @@ class HomePageSearchFieldWidget extends StatelessWidget {
           ),
           filled: true,
           fillColor: Colors.grey.shade300,
-          contentPadding: const EdgeInsets.all(10),
+          contentPadding: const EdgeInsets.all(0),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(color: Colors.grey.shade300)),

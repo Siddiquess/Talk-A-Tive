@@ -17,6 +17,7 @@ class UserSignupRepository {
       final response = await apiServices.httpPostethod(url: url, body: data);
       log("signup repo success");
       getAccessToken(userSignupModelFromJson(response));
+      setUserID(userSignupModelFromJson(response));
       return right(userSignupModelFromJson(response));
     } catch (e) {
       log("signup repo failed");
@@ -28,5 +29,10 @@ class UserSignupRepository {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.setString(GlobalKeys.accessToken, userLoginModel.token!);
     await sharedPref.setBool(GlobalKeys.userLoginKey, true);
+  }
+
+   Future<void> setUserID(UserSignupModel userLoginModel) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setString(GlobalKeys.userIDKey, userLoginModel.id!);
   }
 }

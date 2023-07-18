@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
-import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/core/sizes.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
 import 'package:talk_a_tive/presentation/chat_page.dart';
@@ -20,12 +18,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: AppColors.primary,
-      ),
-    );
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       BlocProvider.of<HomeChatListBloc>(context).add(GetHomeChatListEvent());
     });
@@ -55,7 +47,6 @@ class HomePage extends StatelessWidget {
                               itemCount: state.homeChatList.data!.length,
                               shrinkWrap: true,
                               padding: const EdgeInsets.only(top: 16),
-                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final chatUsers = UserChatDetailList.chatUsers;
                                 final userChatList = state.homeChatList.data!;

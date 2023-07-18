@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_sign_up/user_sign_up_bloc.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
@@ -7,7 +6,6 @@ import 'package:talk_a_tive/presentation/components/login_signup_components/rich
 import 'package:talk_a_tive/presentation/components/snackbar_widget.dart';
 import 'package:talk_a_tive/presentation/home_chat_list_page.dart';
 import 'package:talk_a_tive/presentation/user_login_page.dart';
-import '../core/app_colors.dart';
 import '../core/sizes.dart';
 import 'components/login_signup_components/login_button_widget.dart';
 import 'components/login_signup_components/login_text_form_widget.dart';
@@ -23,12 +21,6 @@ class UserSignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-          statusBarColor: AppColors.white,
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark),
-    );
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);

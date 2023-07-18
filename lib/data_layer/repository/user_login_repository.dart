@@ -19,6 +19,7 @@ class UserLoginRepository {
       log("repo success");
 
       getAccessToken(userLoginModelFromJson(response));
+      setUserID(userLoginModelFromJson(response));
 
       return right(userLoginModelFromJson(response));
     } catch (e) {
@@ -32,5 +33,10 @@ class UserLoginRepository {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.setString(GlobalKeys.accessToken, userLoginModel.token!);
     await sharedPref.setBool(GlobalKeys.userLoginKey, true);
+  }
+
+  Future<void> setUserID(UserLoginModel userLoginModel) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setString(GlobalKeys.userIDKey, userLoginModel.id!);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/user_login/user_login_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
@@ -20,12 +19,7 @@ class UserLoginPage extends StatelessWidget {
   final GlobalKey _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-          statusBarColor: AppColors.white,
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark),
-    );
+ 
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
