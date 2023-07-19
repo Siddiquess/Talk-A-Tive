@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
+import 'package:talk_a_tive/data_layer/data_provider/response/api_response.dart';
+import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
 
 import '../../../core/debouncer.dart';
 
@@ -16,34 +18,43 @@ class HomePageSearchFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
-      child: TextField(
-        onChanged: (value) {
-          _debouncer.run(
-            () {
-              BlocProvider.of<HomeChatListBloc>(context)
-                  .add(GetSearchChatList(chatQuery: value));
+      child: BlocBuilder<HomeChatListBloc, HomeChatListState>(
+        builder: (context, state) {
+          return TextField(
+            onChanged: (value) {
+              _debouncer.run(
+                () {
+                  BlocProvider.of<HomeChatListBloc>(context)
+                      .add(GetSearchChatList(chatQuery: value));
+                  if (value.isEmpty) {
+                    state.searchUserList.status = Status.initial;
+                    state.homeChatList = ApiResponse.initial();
+                    BlocProvider.of<HomeChatListBloc>(context)
+                        .add(GetHomeChatListEvent());
+                  }
+                },
+              );
             },
+            decoration: InputDecoration(
+              hintText: "Search...",
+              hintStyle: TextStyle(color: Colors.grey.shade600),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.grey.shade600,
+                size: 25,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade300,
+              contentPadding: const EdgeInsets.all(0),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(color: Colors.grey.shade300)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(color: Colors.grey.shade300)),
+            ),
           );
         },
-        decoration: InputDecoration(
-          
-          hintText: "Search...",
-          hintStyle: TextStyle(color: Colors.grey.shade600),
-          prefixIcon: Icon(
-            Icons.search,
-            color: Colors.grey.shade600,
-            size: 25,
-          ),
-          filled: true,
-          fillColor: Colors.grey.shade300,
-          contentPadding: const EdgeInsets.all(0),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.grey.shade300)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.grey.shade300)),
-        ),
       ),
     );
   }

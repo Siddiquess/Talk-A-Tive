@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:talk_a_tive/core/constant.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/api_response.dart';
+import 'package:talk_a_tive/data_layer/model/get_all_user_list_model.dart';
 import 'package:talk_a_tive/data_layer/repository/home_chat_list_repository.dart';
 
 import '../../data_layer/model/home_chat_list_model.dart';
@@ -58,26 +59,27 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
     on<GetSearchChatList>(
       (event, emit) async {
         emit(
-          HomeChatListState(
-            homeChatList: ApiResponse.loading(),
-          ),
+          state.copyWith(),
         );
 
-        final response = await homechatRepo.getHomeChatList(
-            url: AppUrls.searchChatList + event.chatQuery);
+        final response = await homechatRepo.getUserList(
+          url: AppUrls.searchUserList + event.chatQuery,
+        );
 
         response.fold(
           (failure) => {
             emit(
-              HomeChatListState(
-                homeChatList: ApiResponse.error(failure.toString()),
+              state.copyWith(
+                searchUserList: ApiResponse.error(
+                  failure.toString(),
+                ),
               ),
             ),
           },
           (success) => {
             emit(
-              HomeChatListState(
-                homeChatList: ApiResponse.completed(success),
+              state.copyWith(
+                searchUserList: ApiResponse.completed(success),
               ),
             ),
           },

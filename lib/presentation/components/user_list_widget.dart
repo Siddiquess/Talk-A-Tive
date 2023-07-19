@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:talk_a_tive/core/sizes.dart';
 
 class ConversationList extends StatelessWidget {
   final String name;
-  final String messageText;
+  final String? messageText;
   final String imageUrl;
-  final String time;
+  final String? time;
   final bool isMessageRead;
   final GestureTapCallback onTap;
   const ConversationList({
     super.key,
     required this.name,
-    required this.messageText,
+   this.messageText,
     required this.imageUrl,
-    required this.time,
+     this.time,
     required this.isMessageRead,
     required this.onTap,
   });
@@ -52,8 +53,10 @@ class ConversationList extends StatelessWidget {
                           const SizedBox(
                             height: 6,
                           ),
+                          messageText == null?
+                          AppSizes.width10:
                           Text(
-                            messageText,
+                            messageText??"",
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey.shade600,
@@ -70,7 +73,7 @@ class ConversationList extends StatelessWidget {
               ),
             ),
             Text(
-              time,
+              time??"",
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: isMessageRead ? FontWeight.bold : FontWeight.normal,

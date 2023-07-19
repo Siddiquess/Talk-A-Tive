@@ -6,6 +6,8 @@ import 'package:talk_a_tive/data_layer/data_provider/network/http_api_services.d
 import 'package:talk_a_tive/data_layer/data_provider/network/network_api_services.dart';
 import 'package:talk_a_tive/data_layer/model/home_chat_list_model.dart';
 
+import '../model/get_all_user_list_model.dart';
+
 class HomeChatListRepository {
   HttpApiServices apiServices = NetworkApiServices();
 
@@ -22,6 +24,23 @@ class HomeChatListRepository {
       return right(homeChatListModelFromJson(response));
     } catch (e) {
       log("Home repo failed");
+      log(e.toString());
+      return left(e);
+    }
+  }
+  Future<Either<dynamic, List<GetAllUserListModel>>> getUserList({
+    required String url,
+  }) async {
+    try {
+      final accessToken = await AccessToken.getAccessToken();
+      final response = await apiServices.httpGetMethod(
+        url: url,
+        headers: accessToken,
+      );
+      log("search repo success");
+      return right(getAllUserListModelFromJson(response));
+    } catch (e) {
+      log("search repo failed");
       log(e.toString());
       return left(e);
     }
