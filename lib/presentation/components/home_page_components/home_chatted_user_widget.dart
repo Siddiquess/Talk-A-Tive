@@ -38,6 +38,11 @@ class HomeChattedUserListWidget extends StatelessWidget {
                 userId: chattedUser.id!,
               ),
             );
+            BlocProvider.of<IndividualChatBloc>(context).add(
+              OnGetAllIndividualMessages(
+                chatRoomId: state.homeChatList.data![index].id!,
+              ),
+            );
 
             Navigator.push(
               context,
@@ -47,6 +52,7 @@ class HomeChattedUserListWidget extends StatelessWidget {
                     imageUrl: chattedUser.pic!,
                     userName: chattedUser.name!,
                     userId: chattedUser.id!,
+                    chatRoomId: state.homeChatList.data![index].id!,
                   );
                 },
               ),

@@ -26,7 +26,7 @@ class IndividualChatBloc
         response.fold(
           (failure) => {
             emit(
-              IndividualChatState(
+              state.copyWith(
                 indChatModel: ApiResponse.error(
                   failure.toString(),
                 ),
@@ -35,7 +35,7 @@ class IndividualChatBloc
           },
           (success) => {
             emit(
-              IndividualChatState(
+              state.copyWith(
                 indChatModel: ApiResponse.completed(
                   success,
                 ),

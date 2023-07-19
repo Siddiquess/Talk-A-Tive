@@ -5,28 +5,34 @@ import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/status.dart';
 import 'package:talk_a_tive/presentation/components/chat_page_components/chat_bg_image_widget.dart';
 import 'package:talk_a_tive/presentation/components/snackbar_widget.dart';
+import '../bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
 import 'components/chat_page_components/chat_appbar_widget.dart';
 import 'components/chat_page_components/chat_content_widget.dart';
 
 class ChatPage extends StatelessWidget {
-  ChatPage({
-    super.key,
-    required this.imageUrl,
-    required this.userName,
-    required this.userId,
-  });
+  ChatPage(
+      {super.key,
+      required this.imageUrl,
+      required this.userName,
+      required this.userId,
+      this.chatRoomId});
   final String imageUrl;
   final String userName;
   final String userId;
+  final String? chatRoomId;
 
   final TextEditingController _chatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    bool isApiCallTriggered = false;
     return WillPopScope(
       onWillPop: () async {
-        BlocProvider.of<IndividualChatBloc>(context).state.messages.clear();
+        BlocProvider.of<IndividualChatBloc>(context)
+            .state
+            .getAllindChatModel
+            .data!
+            .clear();
+
         return true;
       },
       child: Scaffold(
@@ -41,16 +47,6 @@ class ChatPage extends StatelessWidget {
         ),
         body: BlocListener<IndividualChatBloc, IndividualChatState>(
             listener: (context, state) {
-              if (state.indChatModel.status == Status.success &&
-                  isApiCallTriggered == false) {
-                isApiCallTriggered = true;
-                BlocProvider.of<IndividualChatBloc>(context).add(
-                  OnGetAllIndividualMessages(
-                    chatRoomId: state.indChatModel.data!.id!,
-                  ),
-                );
-              }
-
               if (state.indChatModel.status == Status.error) {
                 SnackBarWidget.flushbar(
                   context: context,
@@ -148,6 +144,13 @@ class ChatPage extends StatelessWidget {
                                             ),
                                           );
                                         }
+
+                                        BlocProvider.of<HomeChatListBloc>(
+                                                context)
+                                            .add(
+                                          GetHomeChatListEvent(
+                                              shouldTriggered: true),
+                                        );
 
                                         _chatController.clear();
                                       }

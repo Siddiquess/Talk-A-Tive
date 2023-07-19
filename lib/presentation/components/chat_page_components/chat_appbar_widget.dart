@@ -23,8 +23,10 @@ class ChatAppbarWidget extends StatelessWidget {
             onPressed: () {
               BlocProvider.of<IndividualChatBloc>(context)
                   .state
-                  .messages
+                  .getAllindChatModel
+                  .data!
                   .clear();
+
               Navigator.pop(context);
             },
             icon: const Icon(
@@ -47,10 +49,9 @@ class ChatAppbarWidget extends StatelessWidget {
                 Text(
                   userName,
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.white
-                  ),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.white),
                 ),
                 const SizedBox(height: 6),
                 Text(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:talk_a_tive/core/constant.dart';
@@ -16,7 +18,8 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
       : super(HomeChatListState(homeChatList: ApiResponse.initial())) {
     on<GetHomeChatListEvent>(
       (event, emit) async {
-        if (state.homeChatList.data != null) {
+        if (state.homeChatList.data != null && event.shouldTriggered == false) {
+          log("this called");
           if (state.homeChatList.data!.isNotEmpty) {
             emit(
               HomeChatListState(
@@ -25,6 +28,8 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
             );
           }
         }
+
+        log("this called bottom");
 
         emit(
           HomeChatListState(
