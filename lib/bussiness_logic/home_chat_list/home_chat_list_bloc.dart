@@ -6,20 +6,38 @@ import 'package:talk_a_tive/core/constant.dart';
 import 'package:talk_a_tive/data_layer/data_provider/response/api_response.dart';
 import 'package:talk_a_tive/data_layer/model/get_all_user_list_model.dart';
 import 'package:talk_a_tive/data_layer/repository/home_chat_list_repository.dart';
-
 import '../../data_layer/model/home_chat_list_model.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as io;
 part 'home_chat_list_event.dart';
 part 'home_chat_list_state.dart';
 
 class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
   final homechatRepo = HomeChatListRepository();
+  final io.Socket socket = io.io(AppUrls.baseUrl, <String, dynamic>{
+    'transports': ['websocket'],
+    'autoConnect': false,
+  });
+
   HomeChatListBloc()
       : super(HomeChatListState(homeChatList: ApiResponse.initial())) {
+    socket.connect();
+    socket.onConnect((_) {
+      log("connected in home");
+    });
+    socket.on('message', (data) {});
+    socket.on("message recieved", (data) {
+      add(GetHomeChatListEvent(shouldTriggered: true));
+    });
+
     on<GetHomeChatListEvent>(
       (event, emit) async {
+        UserID.getUserID().then(
+          (userID) => {
+            socket.emit("setup", {"_id": userID}),
+          },
+        );
+
         if (state.homeChatList.data != null && event.shouldTriggered == false) {
-          log("this called");
           if (state.homeChatList.data!.isNotEmpty) {
             emit(
               HomeChatListState(
@@ -28,14 +46,13 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
             );
           }
         }
-
-        log("this called bottom");
-
-        emit(
-          HomeChatListState(
-            homeChatList: ApiResponse.loading(),
-          ),
-        );
+        if (event.shouldTriggered == false) {
+          emit(
+            HomeChatListState(
+              homeChatList: ApiResponse.loading(),
+            ),
+          );
+        }
 
         final response =
             await homechatRepo.getHomeChatList(url: AppUrls.homeChatList);
@@ -56,6 +73,7 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
                 homeChatList: ApiResponse.completed(success),
               ),
             ),
+            log(state.homeChatList.data.toString()),
           },
         );
       },

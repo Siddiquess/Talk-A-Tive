@@ -40,3 +40,6 @@ class OnSendChatMessageEvent extends IndividualChatEvent {
     return sendMsgBody.toJson();
   }
 }
+
+
+class OnDisconnectSocketIO extends IndividualChatEvent{}

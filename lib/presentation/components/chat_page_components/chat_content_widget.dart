@@ -68,25 +68,31 @@ class ChatContentWidget extends StatelessWidget {
                                         ),
                                         padding: const EdgeInsets.all(10),
                                         child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Text(
-                                              message.content!,
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 5, top: 6),
+                                            Flexible(
+                                              flex: 5,
                                               child: Text(
-                                                DateFormat('h:mm a')
-                                                    .format(messageTime!),
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: isCurrentUser
-                                                      ? AppColors.white
-                                                          .withAlpha(100)
-                                                      : Colors.grey.shade500,
+                                                message.content!,
+                                                style: const TextStyle(
+                                                    fontSize: 15),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, top: 6),
+                                                child: Text(
+                                                  DateFormat('h:mm a')
+                                                      .format(messageTime!),
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: isCurrentUser
+                                                        ? AppColors.white
+                                                            .withAlpha(100)
+                                                        : Colors.grey.shade500,
+                                                  ),
                                                 ),
                                               ),
                                             ),

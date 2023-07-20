@@ -8,6 +8,7 @@ import 'package:talk_a_tive/data_layer/model/get_individual_messages_model.dart'
 import 'package:talk_a_tive/data_layer/model/individual_chat_model.dart';
 import 'package:talk_a_tive/data_layer/repository/individual_chat_repository.dart';
 import '../../data_layer/model/send_individual_message_model.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 part 'individual_chat_event.dart';
 part 'individual_chat_state.dart';
@@ -15,7 +16,18 @@ part 'individual_chat_state.dart';
 class IndividualChatBloc
     extends Bloc<IndividualChatEvent, IndividualChatState> {
   final individualChatRepo = IndividualChatRepository();
+
   IndividualChatBloc() : super(IndividualChatState()) {
+    final io.Socket socket = io.io(AppUrls.baseUrl,
+        io.OptionBuilder().setTransports(['websocket']).build());
+
+    socket.onConnect((_) {
+      log("connected");
+    });
+    socket.on("message recieved", (data) {
+      add(OnGetAllIndividualMessages(chatRoomId: data["chat"]["_id"]));
+    });
+
     on<OnCreatIndividualChat>(
       (event, emit) async {
         final response = await individualChatRepo.creatChatRoom(
@@ -40,7 +52,8 @@ class IndividualChatBloc
                   success,
                 ),
               ),
-            )
+            ),
+            socket.emit("join chat", success.id),
           },
         );
       },
@@ -48,7 +61,7 @@ class IndividualChatBloc
 
     on<OnGetAllIndividualMessages>(
       (event, emit) async {
-        List<String> updatedMessage = List.from(state.messages);
+        List<Map<String, String>> updatedMessage = List.from(state.messages);
         final response = await individualChatRepo.getAllMessages(
             url: AppUrls.getAllMessages + event.chatRoomId);
 
@@ -62,10 +75,14 @@ class IndividualChatBloc
             ),
           },
           (success) => {
-            for (var element in success)
-              {
-                updatedMessage.add(element.content!),
-              },
+            updatedMessage.addAll(
+              success.map(
+                (element) => {
+                  'id': element.sender!.id!,
+                  'content': element.content!,
+                },
+              ),
+            ),
             emit(
               state.copyWith(
                 messages: updatedMessage,
@@ -79,10 +96,13 @@ class IndividualChatBloc
 
     on<OnSendChatMessageEvent>(
       (event, emit) async {
-        List<String> updatedMessage = List.from(state.messages);
-        updatedMessage.add(event.message);
-        emit(
-          state.copyWith(),
+        List<Map<String, String>> updatedMessage = List.from(state.messages);
+        await UserID.getUserID().then(
+          (userID) {
+            updatedMessage.add(
+              {"id": userID!, "content": event.message},
+            );
+          },
         );
 
         final response = await individualChatRepo.sendMessages(
@@ -95,16 +115,20 @@ class IndividualChatBloc
             state.copyWith(),
           },
           (success) => {
-            log("updated ${updatedMessage.length}"),
-            log("updated getall  length ${state.getAllindChatModel.data!.map((e) => e.content).last}"),
             emit(
               state.copyWith(
                 messages: updatedMessage,
               ),
-            )
+            ),
+            log(success.toJson().toString()),
+            socket.emit("new message", success.toJson())
           },
         );
       },
     );
+
+    on<OnDisconnectSocketIO>((event, emit) {
+      socket.dispose();
+    });
   }
 }

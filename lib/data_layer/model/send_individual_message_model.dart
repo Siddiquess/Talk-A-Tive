@@ -1,6 +1,7 @@
+
 import 'dart:convert';
 
-SendIndividualMessageModel sendIndividualMessageModelFromJson(Map<String, dynamic> str) =>
+SendIndividualMessageModel sendIndividualMessageModelFromJson(Map<String,dynamic> str) =>
     SendIndividualMessageModel.fromJson(str);
 
 String sendIndividualMessageModelToJson(SendIndividualMessageModel data) =>
@@ -8,8 +9,8 @@ String sendIndividualMessageModelToJson(SendIndividualMessageModel data) =>
 
 class SendIndividualMessageModel {
   List<dynamic>? readBy;
-  String? chatId;
   String? id;
+  String? chatId;
   Sender? sender;
   String? content;
   Chat? chat;
@@ -19,8 +20,8 @@ class SendIndividualMessageModel {
 
   SendIndividualMessageModel({
     this.readBy,
-    this.chatId,
     this.id,
+    this.chatId,
     this.sender,
     this.content,
     this.chat,
@@ -34,8 +35,8 @@ class SendIndividualMessageModel {
         readBy: json["readBy"] == null
             ? []
             : List<dynamic>.from(json["readBy"]!.map((x) => x)),
-        chatId: json["chatId"],
         id: json["_id"],
+        chatId: json["chatId"],
         sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
         content: json["content"],
         chat: json["chat"] == null ? null : Chat.fromJson(json["chat"]),
@@ -49,8 +50,16 @@ class SendIndividualMessageModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "readBy":
+            readBy == null ? [] : List<dynamic>.from(readBy!.map((x) => x)),
+        "_id": id,
         "chatId": chatId,
+        "sender": sender?.toJson(),
         "content": content,
+        "chat": chat?.toJson(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
       };
 }
 

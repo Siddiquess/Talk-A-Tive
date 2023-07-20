@@ -1,7 +1,7 @@
 part of 'individual_chat_bloc.dart';
 
 class IndividualChatState {
-  List<String> messages;
+  List<Map<String,String>> messages = [];
   ApiResponse<IndividualChatModel> indChatModel;
   ApiResponse<List<GetIndividualMessagesModel>> getAllindChatModel;
 
@@ -13,12 +13,12 @@ class IndividualChatState {
         getAllindChatModel = getAllindChatModel ?? ApiResponse.initial();
 
    IndividualChatState copyWith({
-    List<String>? messages,
+    List<Map<String,String>> messages = const [],
     ApiResponse<IndividualChatModel>? indChatModel,
     ApiResponse<List<GetIndividualMessagesModel>>? getAllindChatModel,
   }) {
     return IndividualChatState(
-      messages: messages ?? this.messages,
+      messages: messages ,
       indChatModel: indChatModel ?? this.indChatModel,
       getAllindChatModel: getAllindChatModel ?? this.getAllindChatModel,
     );

@@ -32,6 +32,8 @@ class ChatPage extends StatelessWidget {
             .getAllindChatModel
             .data!
             .clear();
+        BlocProvider.of<IndividualChatBloc>(context)
+            .add(OnDisconnectSocketIO());
 
         return true;
       },

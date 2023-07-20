@@ -26,6 +26,8 @@ class ChatAppbarWidget extends StatelessWidget {
                   .getAllindChatModel
                   .data!
                   .clear();
+              BlocProvider.of<IndividualChatBloc>(context)
+                  .add(OnDisconnectSocketIO());
 
               Navigator.pop(context);
             },
