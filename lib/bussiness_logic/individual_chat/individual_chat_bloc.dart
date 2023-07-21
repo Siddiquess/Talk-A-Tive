@@ -64,6 +64,7 @@ class IndividualChatBloc
                 ),
               ),
             ),
+            add(OnGetAllIndividualMessages(chatRoomId: success.id!)),
             socket.emit("join chat", success.id),
           },
         );

@@ -10,27 +10,30 @@ class HomePageSearchFieldWidget extends StatelessWidget {
   const HomePageSearchFieldWidget({
     super.key,
     required Debouncer debouncer,
+    required this.searchUserController,
   }) : _debouncer = debouncer;
 
   final Debouncer _debouncer;
+  final TextEditingController searchUserController;
 
   @override
   Widget build(BuildContext context) {
+    HomeChatListBloc homeChatListBloc =
+        BlocProvider.of<HomeChatListBloc>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
       child: BlocBuilder<HomeChatListBloc, HomeChatListState>(
         builder: (context, state) {
           return TextField(
+            controller: searchUserController,
             onChanged: (value) {
               _debouncer.run(
                 () {
-                  BlocProvider.of<HomeChatListBloc>(context)
-                      .add(GetSearchChatList(chatQuery: value));
+                  homeChatListBloc.add(GetSearchChatList(chatQuery: value));
                   if (value.isEmpty) {
                     state.searchUserList.status = Status.initial;
                     state.homeChatList = ApiResponse.initial();
-                    BlocProvider.of<HomeChatListBloc>(context)
-                        .add(GetHomeChatListEvent());
+                    homeChatListBloc.add(GetHomeChatListEvent());
                   }
                 },
               );

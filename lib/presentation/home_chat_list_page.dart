@@ -14,11 +14,12 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final _debouncer = Debouncer(milliseconds: 1000);
+  final TextEditingController _searchUserController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     String? currentUserId;
-     BlocProvider.of<HomeChatListBloc>(context).add(OnConnectHomeSocketIO());
+    BlocProvider.of<HomeChatListBloc>(context).add(OnConnectHomeSocketIO());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       UserID.getUserID().then((value) {
         currentUserId = value;
@@ -39,7 +40,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HomePageSearchFieldWidget(debouncer: _debouncer),
+              HomePageSearchFieldWidget(debouncer: _debouncer,searchUserController: _searchUserController),
               BlocBuilder<HomeChatListBloc, HomeChatListState>(
                 builder: (context, state) {
                   return state.homeChatList.status == Status.loading ||
@@ -58,6 +59,7 @@ class HomePage extends StatelessWidget {
                               ? SearchUserListWidget(
                                   currentUserId: currentUserId,
                                   state: state,
+                                  searchUserController: _searchUserController,
                                 )
                               : state.homeChatList.status == Status.error
                                   ? Center(

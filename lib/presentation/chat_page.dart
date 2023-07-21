@@ -10,25 +10,25 @@ import 'components/chat_page_components/chat_content_widget.dart';
 import 'components/chat_page_components/chat_send_widget.dart';
 
 class ChatPage extends StatelessWidget {
-  ChatPage(
-      {super.key,
-      required this.imageUrl,
-      required this.userName,
-      required this.userId,
-      this.chatRoomId});
+  ChatPage({
+    super.key,
+    required this.imageUrl,
+    required this.userName,
+    required this.userId,
+  });
   final String imageUrl;
   final String userName;
   final String userId;
-  final String? chatRoomId;
 
   final TextEditingController _chatController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    ScrollController scrollController = ScrollController();
     final homeChatBloc = BlocProvider.of<HomeChatListBloc>(context);
     final individualChatBloc = BlocProvider.of<IndividualChatBloc>(context);
     individualChatBloc.add(OnConnectSocketIO());
+
     return WillPopScope(
       onWillPop: () async {
         individualChatBloc.state.messages.clear();

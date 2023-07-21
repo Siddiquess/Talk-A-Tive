@@ -11,13 +11,17 @@ class SearchUserListWidget extends StatelessWidget {
     super.key,
     required this.currentUserId,
     required this.state,
+    required this.searchUserController,
   });
 
   final String? currentUserId;
   final HomeChatListState state;
+  final TextEditingController searchUserController;
 
   @override
   Widget build(BuildContext context) {
+    IndividualChatBloc individualchatBloc =
+        BlocProvider.of<IndividualChatBloc>(context);
     return ListView.builder(
       itemCount: state.searchUserList.data!.length,
       shrinkWrap: true,
@@ -28,9 +32,8 @@ class SearchUserListWidget extends StatelessWidget {
         return ConversationList(
           name: searchedUser.name!,
           imageUrl: searchedUser.pic!,
-          isMessageRead: (index == 0 || index == 3) ? true : false,
           onTap: () {
-            BlocProvider.of<IndividualChatBloc>(context).add(
+            individualchatBloc.add(
               OnCreatIndividualChat(
                 userId: searchedUser.id!,
               ),
@@ -48,6 +51,7 @@ class SearchUserListWidget extends StatelessWidget {
                 },
               ),
             );
+            searchUserController.clear();
           },
         );
       },

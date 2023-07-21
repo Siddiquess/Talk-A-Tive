@@ -25,14 +25,8 @@ class ChatSendingWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  top: 7,
-                ),
-                constraints: const BoxConstraints(
-                  minHeight: 46,
-                ),
-                height: 46,
+                padding: const EdgeInsets.only(left: 10, top: 7),
+                height: 45,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(30),
@@ -42,20 +36,16 @@ class ChatSendingWidget extends StatelessWidget {
                     const SizedBox(width: 15),
                     Expanded(
                       child: Scrollbar(
-                        child: SizedBox(
-                          height: 120,
-                          width: 240,
-                          child: TextField(
-                            expands: true,
-                            controller: _chatController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
-                              hintText: "Write message...",
-                              hintStyle: TextStyle(color: Colors.black54),
-                              border: InputBorder.none,
-                            ),
+                        child: TextField(
+                          expands: true,
+                          controller: _chatController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.only(top: 3),
+                            hintText: "Write message...",
+                            hintStyle: TextStyle(color: Colors.black54),
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
@@ -69,15 +59,14 @@ class ChatSendingWidget extends StatelessWidget {
               builder: (context, indChatstate) {
                 return Container(
                   padding: const EdgeInsets.only(
-                    left: 2,
-                    right: 5,
+                    left: 5,
+                    right: 10,
                     bottom: 10,
                     top: 10,
                   ),
                   height: 65,
-                  child: FloatingActionButton(
-                    onPressed: indChatstate.indChatModel.status ==
-                            Status.success
+                  child: GestureDetector(
+                    onTap: indChatstate.indChatModel.status == Status.success
                         ? () {
                             String chatMessage = _chatController.text.trim();
                             if (chatMessage.isNotEmpty) {
@@ -91,7 +80,7 @@ class ChatSendingWidget extends StatelessWidget {
                             }
 
                             scrollController.animateTo(
-                              scrollController.position.maxScrollExtent,
+                              scrollController.position.minScrollExtent,
                               curve: Curves.easeOut,
                               duration: const Duration(milliseconds: 300),
                             );
@@ -99,12 +88,17 @@ class ChatSendingWidget extends StatelessWidget {
                             _chatController.clear();
                           }
                         : null,
-                    backgroundColor: AppColors.primarylite,
-                    elevation: 0,
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 25,
+                    child: Container(
+                      width: 45,
+                      decoration: BoxDecoration(
+                        color: AppColors.primarylite,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                        size: 25,
+                      ),
                     ),
                   ),
                 );
