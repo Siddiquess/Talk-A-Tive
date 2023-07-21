@@ -13,12 +13,12 @@ class IndividualChatState {
         getAllindChatModel = getAllindChatModel ?? ApiResponse.initial();
 
    IndividualChatState copyWith({
-    List<Map<String,String>> messages = const [],
+    List<Map<String,String>>? messages = const [],
     ApiResponse<IndividualChatModel>? indChatModel,
     ApiResponse<List<GetIndividualMessagesModel>>? getAllindChatModel,
   }) {
     return IndividualChatState(
-      messages: messages ,
+      messages: messages ?? this.messages,
       indChatModel: indChatModel ?? this.indChatModel,
       getAllindChatModel: getAllindChatModel ?? this.getAllindChatModel,
     );

@@ -41,5 +41,11 @@ class OnSendChatMessageEvent extends IndividualChatEvent {
   }
 }
 
+class OnSocketRecivedMessage extends IndividualChatEvent {
+  final dynamic response;
+  OnSocketRecivedMessage({required this.response});
+}
 
-class OnDisconnectSocketIO extends IndividualChatEvent{}
+class OnConnectSocketIO extends IndividualChatEvent {}
+
+class OnDisconnectSocketIO extends IndividualChatEvent {}

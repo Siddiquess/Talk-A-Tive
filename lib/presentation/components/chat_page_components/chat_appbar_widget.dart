@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
 
+import '../../../bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
+
 class ChatAppbarWidget extends StatelessWidget {
   const ChatAppbarWidget({
     super.key,
@@ -15,20 +17,18 @@ class ChatAppbarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeChatBloc = BlocProvider.of<HomeChatListBloc>(context);
+    final individualChatBloc = BlocProvider.of<IndividualChatBloc>(context);
+
     return Container(
       padding: const EdgeInsets.only(right: 16),
       child: Row(
         children: [
           IconButton(
             onPressed: () {
-              BlocProvider.of<IndividualChatBloc>(context)
-                  .state
-                  .getAllindChatModel
-                  .data!
-                  .clear();
-              BlocProvider.of<IndividualChatBloc>(context)
-                  .add(OnDisconnectSocketIO());
-
+              individualChatBloc.state.messages.clear();
+              individualChatBloc.add(OnDisconnectSocketIO());
+              homeChatBloc.add(GetHomeChatListEvent());
               Navigator.pop(context);
             },
             icon: const Icon(
@@ -67,8 +67,8 @@ class ChatAppbarWidget extends StatelessWidget {
             ),
           ),
           const Icon(
-            Icons.settings,
-            color: Colors.black54,
+            Icons.more_vert,
+            color: AppColors.white,
           ),
         ],
       ),

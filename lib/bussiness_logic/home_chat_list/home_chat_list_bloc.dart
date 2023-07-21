@@ -20,11 +20,13 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
 
   HomeChatListBloc()
       : super(HomeChatListState(homeChatList: ApiResponse.initial())) {
-    socket.connect();
-    socket.onConnect((_) {
-      log("connected in home");
+    on<OnConnectHomeSocketIO>((event, emit) {
+      socket.connect();
+      socket.onConnect((_) {
+        log("connected in home");
+      });
     });
-    socket.on('message', (data) {});
+
     socket.on("message recieved", (data) {
       add(GetHomeChatListEvent(shouldTriggered: true));
     });
@@ -73,7 +75,6 @@ class HomeChatListBloc extends Bloc<HomeChatListEvent, HomeChatListState> {
                 homeChatList: ApiResponse.completed(success),
               ),
             ),
-            log(state.homeChatList.data.toString()),
           },
         );
       },

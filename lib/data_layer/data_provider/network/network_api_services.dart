@@ -46,7 +46,7 @@ class NetworkApiServices extends HttpApiServices {
   dynamic returnResponse(Response<dynamic>? response) {
     if (response != null) {
       final jsonBody = response.data;
-      log("here========================");
+      log("-----------------------");
       switch (response.statusCode) {
         case 200:
           log("1");

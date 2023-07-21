@@ -15,3 +15,7 @@ class GetSearchChatList extends HomeChatListEvent {
 
   GetSearchChatList({required this.chatQuery});
 }
+
+
+class OnConnectHomeSocketIO extends HomeChatListEvent{}
+class OnDisonnectHomeSocketIO extends HomeChatListEvent{}

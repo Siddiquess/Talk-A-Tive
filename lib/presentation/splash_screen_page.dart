@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
             );
           }
           return AnimatedSplashScreen(
-            splashIconSize: 300,
+            splashIconSize: 200,
             splash: Padding(
               padding: const EdgeInsets.all(50.0),
               child: SizedBox(

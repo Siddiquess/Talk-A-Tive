@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? currentUserId;
+     BlocProvider.of<HomeChatListBloc>(context).add(OnConnectHomeSocketIO());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       UserID.getUserID().then((value) {
         currentUserId = value;
