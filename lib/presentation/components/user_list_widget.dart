@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
 import 'package:talk_a_tive/core/sizes.dart';
 
+import '../../bussiness_logic/individual_chat/individual_chat_bloc.dart';
+import '../chat_page.dart';
+
 class ConversationList extends StatelessWidget {
   final String name;
+  final String userId;
   final String? messageText;
   final String imageUrl;
   final String? time;
@@ -11,6 +16,7 @@ class ConversationList extends StatelessWidget {
   const ConversationList({
     super.key,
     required this.name,
+    required this.userId,
     this.messageText,
     required this.imageUrl,
     this.time,
@@ -65,7 +71,6 @@ class ConversationList extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: Colors.grey.shade600,
-                                    
                                   ),
                                 ),
                         ],
@@ -88,6 +93,8 @@ class ConversationList extends StatelessWidget {
   }
 
   void _openCustomDialog(context) {
+    IndividualChatBloc individualchatBloc =
+        BlocProvider.of<IndividualChatBloc>(context);
     showGeneralDialog(
       barrierColor: Colors.black.withOpacity(0.5),
       transitionBuilder: (context, a1, a2, widget) {
@@ -120,13 +127,34 @@ class ConversationList extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                              
+                              Navigator.pop(context);
+                              individualchatBloc.add(
+                                OnCreatIndividualChat(
+                                  userId: userId,
+                                ),
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ChatPage(
+                                      imageUrl: imageUrl,
+                                      userName: name,
+                                      userId: userId,
+                                    );
+                                  },
+                                ),
+                              );
                             },
                             child: Container(
                               height: 45,
                               width: double.infinity,
                               color: AppColors.black.withAlpha(80),
-                              child: const Icon(Icons.chat,size: 30,color: AppColors.white,),
+                              child: const Icon(
+                                Icons.chat,
+                                size: 30,
+                                color: AppColors.white,
+                              ),
                             ),
                           )
                         ],

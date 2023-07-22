@@ -31,6 +31,7 @@ class SearchUserListWidget extends StatelessWidget {
 
         return ConversationList(
           name: searchedUser.name!,
+          userId: searchedUser.id!,
           imageUrl: searchedUser.pic!,
           onTap: () {
             individualchatBloc.add(

@@ -40,6 +40,7 @@ class HomeChattedUserListWidget extends StatelessWidget {
               );
               return ConversationList(
                 name: chattedUser.name!,
+                userId: chattedUser.id!,
                 messageText: homeChatUsers.latestMessage?.content,
                 imageUrl: chattedUser.pic!,
                 time: formatTimestamp(homeChatUsers.latestMessage!.createdAt!),

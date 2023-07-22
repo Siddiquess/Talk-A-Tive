@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talk_a_tive/bussiness_logic/individual_chat/individual_chat_bloc.dart';
 import 'package:talk_a_tive/core/app_colors.dart';
-
 import '../../../bussiness_logic/home_chat_list/home_chat_list_bloc.dart';
 
 class ChatAppbarWidget extends StatelessWidget {
@@ -25,10 +24,9 @@ class ChatAppbarWidget extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            onPressed: () {
-              individualChatBloc.state.messages.clear();
-              individualChatBloc.add(OnDisconnectSocketIO());
-              homeChatBloc.add(GetHomeChatListEvent());
+            onPressed: ()  {
+             individualChatBloc.state.messages.clear();
+              homeChatBloc.add(GetHomeChatListEvent(shouldTriggered: true));
               Navigator.pop(context);
             },
             icon: const Icon(
@@ -74,4 +72,6 @@ class ChatAppbarWidget extends StatelessWidget {
       ),
     );
   }
+
+ 
 }

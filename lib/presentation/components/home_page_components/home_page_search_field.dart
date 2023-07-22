@@ -24,37 +24,40 @@ class HomePageSearchFieldWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10, left: 16, right: 16),
       child: BlocBuilder<HomeChatListBloc, HomeChatListState>(
         builder: (context, state) {
-          return TextField(
-            controller: searchUserController,
-            onChanged: (value) {
-              _debouncer.run(
-                () {
-                  homeChatListBloc.add(GetSearchChatList(chatQuery: value));
-                  if (value.isEmpty) {
-                    state.searchUserList.status = Status.initial;
-                    state.homeChatList = ApiResponse.initial();
-                    homeChatListBloc.add(GetHomeChatListEvent());
-                  }
-                },
-              );
-            },
-            decoration: InputDecoration(
-              hintText: "Search...",
-              hintStyle: TextStyle(color: Colors.grey.shade600),
-              prefixIcon: Icon(
-                Icons.search,
-                color: Colors.grey.shade600,
-                size: 25,
+          return SizedBox(
+            height: 40,
+            child: TextField(
+              controller: searchUserController,
+              onChanged: (value) {
+                _debouncer.run(
+                  () {
+                    homeChatListBloc.add(GetSearchChatList(chatQuery: value));
+                    if (value.isEmpty) {
+                      state.searchUserList.status = Status.initial;
+                      state.homeChatList = ApiResponse.initial();
+                      homeChatListBloc.add(GetHomeChatListEvent());
+                    }
+                  },
+                );
+              },
+              decoration: InputDecoration(
+                hintText: "Search...",
+                hintStyle: TextStyle(color: Colors.grey.shade600),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey.shade600,
+                  size: 25,
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade300,
+                contentPadding: const EdgeInsets.all(0),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.grey.shade300)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.grey.shade300)),
               ),
-              filled: true,
-              fillColor: Colors.grey.shade300,
-              contentPadding: const EdgeInsets.all(0),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Colors.grey.shade300)),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Colors.grey.shade300)),
             ),
           );
         },

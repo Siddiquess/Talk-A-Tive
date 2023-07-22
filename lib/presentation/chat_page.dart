@@ -32,7 +32,7 @@ class ChatPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         individualChatBloc.state.messages.clear();
-        homeChatBloc.add(GetHomeChatListEvent());
+        homeChatBloc.add(GetHomeChatListEvent(shouldTriggered: true));
         return true;
       },
       child: Scaffold(
