@@ -27,12 +27,17 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeChatBloc = BlocProvider.of<HomeChatListBloc>(context);
     final individualChatBloc = BlocProvider.of<IndividualChatBloc>(context);
-    individualChatBloc.add(OnConnectSocketIO());
+
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   log("hi");
+    //   individualChatBloc.add(OnEnterInidvidualChatRoom());
+    // });
 
     return WillPopScope(
       onWillPop: () async {
         individualChatBloc.state.messages.clear();
         homeChatBloc.add(GetHomeChatListEvent(shouldTriggered: true));
+         individualChatBloc.add(OnLeaveIndividualChatRoom());
         return true;
       },
       child: Scaffold(
@@ -42,6 +47,7 @@ class ChatPage extends StatelessWidget {
             child: ChatAppbarWidget(
               imageUrl: imageUrl,
               userName: userName,
+              userId: userId,
             ),
           ),
         ),

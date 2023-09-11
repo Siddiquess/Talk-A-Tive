@@ -23,11 +23,22 @@ class IndividualChatBloc
   });
 
   IndividualChatBloc() : super(IndividualChatState()) {
-    on<OnConnectSocketIO>((event, emit) {
+    on<OnEnterInidvidualChatRoom>((event, emit) {
       socket.connect();
       socket.onConnect((_) {
         log("connected in chat");
       });
+    });
+    socket.on("connected", (data) {
+      log("here--------------------------- $data");
+      
+      add(OnChatRoomFunctions(
+        isConnected: true,
+        isConnectedUser:data));
+    });
+
+    socket.on("typing", (data) {
+      log("typing $data");
     });
 
     socket.on(
@@ -143,14 +154,23 @@ class IndividualChatBloc
       },
     );
 
+    on<OnChatRoomFunctions>((event, emit) {
+      if (event.isTyping) {
+        socket.emit("typing", state.indChatModel.data!.id);
+        emit(state.copyWith(isTyping: true));
+      }
+      if (event.isConnected) {
+        emit(state.copyWith(isConnected:event.isConnectedUser));
+      }
+    });
+
     on<OnSocketRecivedMessage>(
       (event, emit) {
         List<Map<String, String>> updatedMessage = List.from(state.messages);
         Map<String, String> recievedMsg = {
           "id": event.response["sender"]["_id"],
           "content": event.response["content"],
-          "chatTime": DateFormat('h:mm a')
-              .format(DateTime.now())
+          "chatTime": DateFormat('h:mm a').format(DateTime.now())
         };
         updatedMessage.add(recievedMsg);
         emit(
@@ -161,9 +181,9 @@ class IndividualChatBloc
       },
     );
 
-    on<OnDisconnectSocketIO>((event, emit) {
+    on<OnLeaveIndividualChatRoom>((event, emit) {
       log("disconnected");
-      // socket.disconnect();
+      socket.emit("leaveRoom", state.indChatModel.data!.id);
     });
   }
 }

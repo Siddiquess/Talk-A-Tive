@@ -46,6 +46,17 @@ class OnSocketRecivedMessage extends IndividualChatEvent {
   OnSocketRecivedMessage({required this.response});
 }
 
-class OnConnectSocketIO extends IndividualChatEvent {}
+class OnChatRoomFunctions extends IndividualChatEvent {
+  final String isConnectedUser;
+  final bool isConnected;
+  final bool isTyping;
+  OnChatRoomFunctions({
+    this.isConnectedUser ="",
+    this.isConnected = false,
+    this.isTyping = false,
+  });
+}
 
-class OnDisconnectSocketIO extends IndividualChatEvent {}
+class OnEnterInidvidualChatRoom extends IndividualChatEvent {}
+
+class OnLeaveIndividualChatRoom extends IndividualChatEvent {}

@@ -9,10 +9,12 @@ class ChatAppbarWidget extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.userName,
+    required this.userId
   });
 
   final String imageUrl;
   final String userName;
+  final String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class ChatAppbarWidget extends StatelessWidget {
             onPressed: ()  {
              individualChatBloc.state.messages.clear();
               homeChatBloc.add(GetHomeChatListEvent(shouldTriggered: true));
-              Navigator.pop(context);
+               individualChatBloc.add(OnLeaveIndividualChatRoom());
+             
             },
             icon: const Icon(
               Icons.arrow_back,
@@ -55,7 +58,7 @@ class ChatAppbarWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  "Online",
+                  individualChatBloc.state.isConnected == userId?"online":"",
                   style: TextStyle(
                     color: Colors.grey.shade200,
                     fontSize: 13,
